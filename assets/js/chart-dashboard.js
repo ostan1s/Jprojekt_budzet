@@ -18,7 +18,6 @@
         var income = data.income || [];
         var expense = data.expense || [];
 
-        // eslint-disable-next-line no-new
         new Chart(canvas.getContext('2d'), {
             type: 'bar',
             data: {

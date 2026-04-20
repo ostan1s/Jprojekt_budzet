@@ -173,6 +173,15 @@ a:hover {
         flex-direction: row;
         flex-wrap: wrap;
     }
+
+    .table {
+        font-size: 0.88rem;
+    }
+
+    .form--filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 .card {
