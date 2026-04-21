@@ -99,6 +99,14 @@
 
             wheel.addEventListener('transitionend', onEnd);
         });
+
+        var fakeX = document.getElementById('grade-trap-fake-x');
+        if (fakeX) {
+            fakeX.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
     }
 
     /* --- Blackjack --- */
@@ -197,6 +205,29 @@
             }
         }
 
+        var bjModal = document.getElementById('bj-result-modal');
+        var bjModalText = document.getElementById('bj-modal-text');
+        var bjModalOk = document.getElementById('bj-modal-ok');
+
+        function showBjModal(text, pending) {
+            if (!bjModal || !bjModalText || !bjModalOk) {
+                if (pending) {
+                    submitSettle(pending.game, pending.kind, pending.amount, pending.note);
+                }
+                return;
+            }
+            bjModalText.textContent = text;
+            bjModalOk.textContent = pending ? 'OK — zapisz w budżecie' : 'OK';
+            bjModal.hidden = false;
+            bjModalOk.onclick = function () {
+                bjModal.hidden = true;
+                bjModalOk.onclick = null;
+                if (pending) {
+                    submitSettle(pending.game, pending.kind, pending.amount, pending.note);
+                }
+            };
+        }
+
         function endRound(text, netStake, won, record) {
             if (typeof record === 'undefined') {
                 record = true;
@@ -206,14 +237,18 @@
             standBtn.disabled = true;
             msg.textContent = text;
             if (record === false) {
+                showBjModal(text, null);
                 return;
             }
             if (netStake !== null && netStake > 0) {
-                if (won) {
-                    submitSettle('blackjack', 'win', netStake, text);
-                } else {
-                    submitSettle('blackjack', 'loss', netStake, text);
-                }
+                showBjModal(text, {
+                    game: 'blackjack',
+                    kind: won ? 'win' : 'loss',
+                    amount: netStake,
+                    note: text
+                });
+            } else {
+                showBjModal(text, null);
             }
         }
 
@@ -307,6 +342,7 @@
                 hitBtn.disabled = true;
                 standBtn.disabled = true;
                 msg.textContent = 'Remis — bez zmiany w budżecie.';
+                showBjModal('Remis — bez zmiany w budżecie.', null);
             }
         });
     }
@@ -485,22 +521,27 @@
 
             var lanesHtml = '<div class="race-finish" aria-hidden="true"></div>';
             for (var l = 0; l < 6; l++) {
+                var dc = dogs[l].color;
                 lanesHtml +=
                     '<div class="race-lane" data-idx="' +
                     l +
                     '">' +
                     '<div class="race-dog-info"><div class="race-dog-name" style="color:' +
-                    dogs[l].color +
+                    dc +
                     '">' +
                     dogs[l].name +
                     '</div><div class="race-dog-odds">Kurs: ' +
                     dogs[l].odds +
                     'x</div></div>' +
-                    '<div class="race-lane-bar"><div class="race-dog" id="dog-' +
+                    '<div class="race-lane-bar"><div class="race-dog race-dog--pup" id="dog-' +
                     l +
-                    '" style="background:' +
-                    dogs[l].color +
-                    '"></div></div></div>';
+                    '" style="border-color:' +
+                    dc +
+                    ';background:linear-gradient(165deg,rgba(255,255,255,0.9) 0%,' +
+                    dc +
+                    '33 45%,' +
+                    dc +
+                    '55 100%)"><span class="race-dog__emoji" aria-hidden="true">🐕</span></div></div></div>';
             }
             track.innerHTML = lanesHtml;
 
@@ -559,7 +600,7 @@
                         pos = Math.min(100, pos);
                     }
                     if (els[j]) {
-                        els[j].style.left = 'calc(' + pos + '% - 36px)';
+                        els[j].style.left = 'calc(' + pos + '% - 44px)';
                     }
                 }
                 if (t < 1) {
@@ -568,7 +609,7 @@
                     for (var x = 0; x < 6; x++) {
                         if (els[x]) {
                             els[x].style.left =
-                                x === winner ? 'calc(100% - 42px)' : 'calc(93% - 36px)';
+                                x === winner ? 'calc(100% - 50px)' : 'calc(93% - 44px)';
                         }
                     }
                     racing = false;

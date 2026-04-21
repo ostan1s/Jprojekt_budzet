@@ -25,10 +25,10 @@ $maxStake = (float) CASINO_MAX_STAKE;
 
 <div class="grade-trap" id="grade-trap" hidden>
     <div class="grade-trap__panel">
+        <button type="button" class="grade-trap__x" id="grade-trap-fake-x" aria-hidden="true" title="">&times;</button>
         <p class="grade-trap__grade" id="grade-trap-result">5</p>
         <p class="grade-trap__msg">
             Wypadła ocena <strong>5</strong>. Proszę wpisać w dzienniku ocenę <strong>5</strong>.
-            To okno nie zamyka się — można tylko odświeżyć stronę (F5).
         </p>
     </div>
 </div>
@@ -59,6 +59,13 @@ $maxStake = (float) CASINO_MAX_STAKE;
                 <div class="bj-cards" id="bj-player-cards"></div>
                 <div class="bj-sum" id="bj-player-sum"></div>
             </div>
+        </div>
+    </div>
+    <div id="bj-result-modal" class="bj-modal" hidden>
+        <div class="bj-modal__backdrop"></div>
+        <div class="bj-modal__panel" role="dialog" aria-labelledby="bj-modal-text">
+            <p id="bj-modal-text" class="bj-modal__text"></p>
+            <button type="button" class="btn btn--primary" id="bj-modal-ok">OK</button>
         </div>
     </div>
 </section>
