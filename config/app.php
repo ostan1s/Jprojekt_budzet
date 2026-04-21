@@ -17,8 +17,12 @@ const EXPENSE_CATEGORIES = [
     'szkoła',
     'rozrywka',
     'zdrowie',
+    'kasyno',
     'inne',
 ];
+
+/** Maks. kwota jednego rozliczenia gry w Kasynie (zł). */
+const CASINO_MAX_STAKE = 10000.0;
 
 const INCOME_CATEGORY_VALUE = 'Przychód';
 

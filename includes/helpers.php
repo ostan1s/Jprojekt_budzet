@@ -91,6 +91,7 @@ function category_label(string $cat): string
         'szkoła'    => 'Szkoła',
         'rozrywka'  => 'Rozrywka',
         'zdrowie'   => 'Zdrowie',
+        'kasyno'    => 'Kasyno',
         'inne'      => 'Inne',
     ];
 
