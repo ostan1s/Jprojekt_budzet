@@ -105,6 +105,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect(app_url($from));
     }
 
+    if ($action === 'casino_settle') {
+        $game = (string) ($_POST['game'] ?? '');
+        $kind = (string) ($_POST['kind'] ?? '');
+        $amountRaw = (string) ($_POST['amount'] ?? '');
+        $note = trim((string) ($_POST['note'] ?? ''));
+        $allowedGames = ['blackjack', 'roulette', 'race'];
+        if (!in_array($game, $allowedGames, true) || !in_array($kind, ['win', 'loss'], true)) {
+            set_flash('error', 'Nieprawidłowe dane gry.');
+            redirect(app_url('casino'));
+        }
+        $amt = parse_amount($amountRaw);
+        if ($amt === null || $amt > CASINO_MAX_STAKE) {
+            set_flash(
+                'error',
+                'Kwota musi być dodatnia i nie większa niż ' . number_format((float) CASINO_MAX_STAKE, 0, ',', ' ') . ' zł.'
+            );
+            redirect(app_url('casino'));
+        }
+        $gameTitles = [
+            'blackjack' => 'Blackjack',
+            'roulette'  => 'Ruletka',
+            'race'      => 'Wyścig chartów',
+        ];
+        $gname = $gameTitles[$game];
+        if ($kind === 'win') {
+            $title = 'Kasyno: ' . $gname . ' – wygrana';
+            $type = 'income';
+            $category = INCOME_CATEGORY_VALUE;
+        } else {
+            $title = 'Kasyno: ' . $gname . ' – przegrana';
+            $type = 'expense';
+            $category = 'kasyno';
+        }
+        $date = (new DateTimeImmutable('today'))->format('Y-m-d');
+        $res = tx_create($type, $title, $amt, $date, $category, $note, $actor);
+        if ($res['ok']) {
+            set_flash('success', 'Zapisano rozliczenie w budżecie.');
+        } else {
+            set_flash('error', implode(' ', $res['errors']));
+        }
+        redirect(app_url('casino'));
+    }
+
     set_flash('error', 'Nieznana akcja.');
     redirect(app_url('dashboard'));
 }
