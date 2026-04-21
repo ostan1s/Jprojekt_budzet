@@ -7,15 +7,10 @@ $maxStake = (float) CASINO_MAX_STAKE;
 ?>
 <section class="casino-hero card">
     <h2 class="casino-hero__title">Dzień dobry Panie Pawle</h2>
-    <p class="casino-hero__lead">
-        Rozrywka demonstracyjna — każda runda może zostać zapisana w budżecie jako przychód (wygrana) lub wydatek (przegrana).
-        Maks. kwota rozliczenia: <?= e(number_format($maxStake, 0, ',', ' ')) ?> zł.
-    </p>
 </section>
 
 <section class="card casino-section" id="section-grade-wheel">
     <h3 class="casino-section__title">Koło fortuny (oceny 1–6)</h3>
-    <p class="casino-section__hint">Zakręć kołem — wylosuj ocenę dla Pana.</p>
     <div class="grade-wheel-box">
         <div class="grade-wheel-pointer" aria-hidden="true"></div>
         <div class="grade-wheel" id="grade-wheel" role="img" aria-label="Koło fortuny z ocenami 1 do 6"></div>
@@ -92,8 +87,26 @@ $maxStake = (float) CASINO_MAX_STAKE;
             <p class="casino-msg" id="rl-msg" role="status"></p>
         </div>
         <div class="casino-panel roulette-visual">
-            <div class="roulette-wheel-outer" id="rl-wheel-outer">
-                <div class="roulette-ball" id="rl-ball"></div>
+            <div class="roulette-wheel-wrap">
+                <div class="roulette-wheel-outer" id="rl-wheel-outer">
+                    <div class="roulette-ball" id="rl-ball"></div>
+                </div>
+                <p class="roulette-legend-title">Numery stołu (0–36)</p>
+                <div class="roulette-legend" aria-label="Kolory pól ruletki europejskiej">
+                    <?php
+                    $rlRed = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+                    for ($n = 0; $n <= 36; $n++) {
+                        if ($n === 0) {
+                            $cls = 'rl-num rl-num--green';
+                        } elseif (in_array($n, $rlRed, true)) {
+                            $cls = 'rl-num rl-num--red';
+                        } else {
+                            $cls = 'rl-num rl-num--black';
+                        }
+                        echo '<span class="' . e($cls) . '">' . e((string) $n) . '</span>';
+                    }
+                    ?>
+                </div>
             </div>
             <p class="rl-result" id="rl-result"></p>
         </div>
