@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect(app_url('dashboard'));
 }
 
-$protected = ['dashboard', 'incomes', 'expenses', 'transactions'];
+$protected = ['dashboard', 'incomes', 'expenses', 'transactions', 'casino'];
 if (in_array($page, $protected, true)) {
     require_login();
 }
@@ -168,6 +168,18 @@ if ($page === 'transactions') {
     $layoutMode = 'app';
     ob_start();
     require BASE_PATH . '/pages/transactions.php';
+    $content = ob_get_clean();
+    require BASE_PATH . '/includes/layout.php';
+    exit;
+}
+
+if ($page === 'casino') {
+    $pageTitle = 'Kasyno';
+    $currentPage = 'casino';
+    $layoutMode = 'app';
+    $includeCasinoAssets = true;
+    ob_start();
+    require BASE_PATH . '/pages/casino.php';
     $content = ob_get_clean();
     require BASE_PATH . '/includes/layout.php';
     exit;

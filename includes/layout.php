@@ -7,10 +7,12 @@ declare(strict_types=1);
 /** @var string $currentPage */
 /** @var string $layoutMode app|auth */
 /** @var bool $includeChart */
+/** @var bool $includeCasinoAssets */
 
 $pageTitle = $pageTitle ?? 'Budżet Domowy';
 $layoutMode = $layoutMode ?? 'app';
 $includeChart = $includeChart ?? false;
+$includeCasinoAssets = $includeCasinoAssets ?? false;
 $cu = current_user();
 
 ?>
@@ -21,9 +23,15 @@ $cu = current_user();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?> — Budżet Domowy</title>
     <link rel="stylesheet" href="assets/css/app.css">
+    <?php if ($includeCasinoAssets) : ?>
+    <link rel="stylesheet" href="assets/css/casino.css">
+    <?php endif; ?>
     <?php if ($includeChart) : ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     <script src="assets/js/chart-dashboard.js" defer></script>
+    <?php endif; ?>
+    <?php if ($includeCasinoAssets) : ?>
+    <script src="assets/js/casino.js" defer></script>
     <?php endif; ?>
 </head>
 <body class="layout <?= $layoutMode === 'auth' ? 'layout--auth' : '' ?>">
@@ -42,6 +50,7 @@ $cu = current_user();
                 <a class="nav-link<?= ($currentPage ?? '') === 'incomes' ? ' is-active' : '' ?>" href="<?= e(app_url('incomes')) ?>">Przychody</a>
                 <a class="nav-link<?= ($currentPage ?? '') === 'expenses' ? ' is-active' : '' ?>" href="<?= e(app_url('expenses')) ?>">Wydatki</a>
                 <a class="nav-link<?= ($currentPage ?? '') === 'transactions' ? ' is-active' : '' ?>" href="<?= e(app_url('transactions')) ?>">Transakcje</a>
+                <a class="nav-link<?= ($currentPage ?? '') === 'casino' ? ' is-active' : '' ?>" href="<?= e(app_url('casino')) ?>">Kasyno</a>
                 <a class="nav-link nav-link--muted" href="<?= e(app_url('logout')) ?>">Wyloguj</a>
             </nav>
         </aside>
