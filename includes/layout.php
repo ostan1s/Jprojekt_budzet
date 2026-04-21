@@ -15,6 +15,14 @@ $includeChart = $includeChart ?? false;
 $includeCasinoAssets = $includeCasinoAssets ?? false;
 $cu = current_user();
 
+$sidebarBalance = 0.0;
+$loanState = ['active' => false];
+if (($layoutMode ?? 'app') === 'app' && is_logged_in()) {
+    require_once BASE_PATH . '/includes/loan.php';
+    $sidebarBalance = round(tx_sum_by_type('income') - tx_sum_by_type('expense'), 2);
+    $loanState = loan_get();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -51,6 +59,17 @@ $cu = current_user();
                 <a class="nav-link<?= ($currentPage ?? '') === 'expenses' ? ' is-active' : '' ?>" href="<?= e(app_url('expenses')) ?>">Wydatki</a>
                 <a class="nav-link<?= ($currentPage ?? '') === 'transactions' ? ' is-active' : '' ?>" href="<?= e(app_url('transactions')) ?>">Transakcje</a>
                 <a class="nav-link<?= ($currentPage ?? '') === 'casino' ? ' is-active' : '' ?>" href="<?= e(app_url('casino')) ?>">Kasyno</a>
+                <div class="sidebar__wallet">
+                    <div class="sidebar__balance">Stan konta: <strong><?= e(format_money($sidebarBalance)) ?></strong></div>
+                    <?php if (empty($loanState['active'])) : ?>
+                        <form method="post" action="index.php" class="sidebar__loan-form">
+                            <input type="hidden" name="action" value="loan_take">
+                            <button type="submit" class="btn btn--small sidebar__loan-btn">Weź chwilówkę</button>
+                        </form>
+                    <?php else : ?>
+                        <p class="sidebar__loan-hint">Chwilówka: do spłaty <?= e(format_money((float) ($loanState['repay_total'] ?? 0))) ?></p>
+                    <?php endif; ?>
+                </div>
                 <a class="nav-link nav-link--muted" href="<?= e(app_url('logout')) ?>">Wyloguj</a>
             </nav>
         </aside>

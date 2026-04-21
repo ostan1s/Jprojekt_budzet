@@ -10,6 +10,7 @@ require BASE_PATH . '/includes/helpers.php';
 require BASE_PATH . '/includes/auth.php';
 require BASE_PATH . '/includes/json_store.php';
 require BASE_PATH . '/includes/transactions.php';
+require BASE_PATH . '/includes/loan.php';
 
 $page = isset($_GET['page']) ? (string) $_GET['page'] : 'dashboard';
 
@@ -146,6 +147,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             set_flash('error', implode(' ', $res['errors']));
         }
         redirect(app_url('casino'));
+    }
+
+    if ($action === 'loan_take') {
+        $res = loan_take($actor);
+        if ($res['ok']) {
+            set_flash('success', 'Przyznano chwilówkę. Pamiętaj o spłacie z odsetkami.');
+        } else {
+            set_flash('error', implode(' ', $res['errors']));
+        }
+        redirect(app_url('dashboard'));
     }
 
     set_flash('error', 'Nieznana akcja.');

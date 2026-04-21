@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+require_once BASE_PATH . '/includes/loan.php';
+$loanDash = loan_get();
+
 $totalIncome = tx_sum_by_type('income');
 $totalExpense = tx_sum_by_type('expense');
 $balance = round($totalIncome - $totalExpense, 2);
@@ -34,6 +37,18 @@ $chartDataJson = json_encode([
 ], JSON_UNESCAPED_UNICODE);
 
 ?>
+<?php if (!empty($loanDash['active'])) :
+    $repayTotal = (float) ($loanDash['repay_total'] ?? round(LOAN_PRINCIPAL * (1 + LOAN_INTEREST_RATE), 2));
+    ?>
+<section class="card section-gap loan-banner">
+    <h3 class="card__title">Chwilówka do spłaty</h3>
+    <p class="loan-banner__text">
+        Pamiętaj: musisz spłacić chwilówkę w kwocie <strong><?= e(format_money($repayTotal)) ?></strong>
+        (kapitał <?= e(format_money((float) LOAN_PRINCIPAL)) ?> + odsetki <?= (int) (LOAN_INTEREST_RATE * 100) ?>%).
+    </p>
+</section>
+<?php endif; ?>
+
 <section class="grid grid--stats">
     <article class="card stat-card stat-card--income">
         <div class="stat-card__label">Suma przychodów</div>

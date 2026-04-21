@@ -28,3 +28,7 @@ const INCOME_CATEGORY_VALUE = 'Przychód';
 
 const RECENT_TRANSACTIONS_LIMIT = 10;
 const DASHBOARD_PREVIEW_LIMIT = 5;
+
+/** Chwilówka: kwota wypłaty i oprocentowanie (spłata = kwota × (1 + stawka)). */
+const LOAN_PRINCIPAL = 3000.0;
+const LOAN_INTEREST_RATE = 0.2;

@@ -134,6 +134,64 @@ a:hover {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.sidebar__wallet {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding: 12px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar__balance {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.sidebar__balance strong {
+    font-weight: 700;
+    color: #fff;
+}
+
+.sidebar__loan-form {
+    margin: 0;
+}
+
+.sidebar__loan-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    color: #0f4c75;
+    border: none;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+}
+
+.sidebar__loan-btn:hover {
+    filter: brightness(1.05);
+}
+
+.sidebar__loan-hint {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    opacity: 0.9;
+    color: #e2e8f0;
+}
+
+.loan-banner {
+    border-left: 4px solid #f59e0b;
+}
+
+.loan-banner__text {
+    margin: 0;
+    line-height: 1.5;
+}
+
 .main-wrap {
     display: flex;
     flex-direction: column;
